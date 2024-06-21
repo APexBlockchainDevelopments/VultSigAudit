@@ -38,7 +38,7 @@ contract Whitelist is Ownable {
     /// @notice Max index allowed
     uint256 private _allowedWhitelistIndex;
     /// @notice Whitelist index for each whitelisted address
-    mapping(address => uint256) private _whitelistIndex;
+    mapping(address => uint256) private _whitelistIndex;  //@audit what's the puprose of index?  //@audit possible DOS due to it not needing any value ot add user
     /// @notice Mapping for blacklisted addresses
     mapping(address => bool) private _isBlacklisted;
     /// @notice Contributed ETH amounts
@@ -176,7 +176,7 @@ contract Whitelist is Ownable {
 
     /// @notice Setter for allowed whitelist index
     /// @param newIndex New index for allowed whitelist
-    function setAllowedWhitelistIndex(uint256 newIndex) external onlyOwner {
+    function setAllowedWhitelistIndex(uint256 newIndex) external onlyOwner { //@audit what's the purpose of this? Can it mess up the mapping?
         _allowedWhitelistIndex = newIndex;
     }
 
@@ -201,7 +201,7 @@ contract Whitelist is Ownable {
     /// @dev Check WL should be applied only
     /// @dev Revert if locked, not whitelisted, blacklisted or already contributed more than capped amount
     /// @dev Update contributed amount
-    function checkWhitelist(address from, address to, uint256 amount) external onlyVultisig {
+    function checkWhitelist(address from, address to, uint256 amount) external onlyVultisig { //@audit how does this work? Contributed to the pool? But never taken out? Just run a loop?
         if (from == _pool && to != owner()) {
             // We only add limitations for buy actions via uniswap v3 pool
             // Still need to ignore WL check if it's owner related actions
