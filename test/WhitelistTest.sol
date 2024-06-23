@@ -14,6 +14,4 @@ contract WhiteListTest {
     function test_unlimitedContributions() public {
 
     }
-
-
 }
